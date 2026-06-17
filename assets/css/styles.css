@@ -35,7 +35,15 @@ body{
 
     .custom-navbar{
         min-height:85px;
+        padding: 10px;
     }
+
+    .navbar-toggler{
+
+    border:none;
+    box-shadow:none;
+
+}
 
 }
 
@@ -103,8 +111,14 @@ body{
 .hero-buttons{
     display:flex;
     gap:15px;
-    flex-wrap:wrap;
+    flex-direction:column;
 }
+.hero-buttons .btn{
+
+    width:100%;
+
+}
+
 
 .hero-card{
     background:rgba(255,255,255,.15);
@@ -144,10 +158,10 @@ body{
 
 .whatsapp-float{
     position:fixed;
-    right:25px;
-    bottom:25px;
-    width:65px;
-    height:65px;
+    right:20px;
+    bottom:20px;
+    width:55px;
+    height:55px;
     border-radius:50%;
     background:#25d366;
     color:white;
@@ -167,7 +181,29 @@ body{
 
 .hero-card{
     margin-top:40px;
+    padding:25px;
 }
+
+.hero-card h3{
+
+    font-size:1.8rem;
+
+}
+
+.hero-list li{
+
+    font-size:1rem;
+    margin-bottom:10px;
+
+}
+.hero-stats{
+
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+
+}
+
 
 }
 
@@ -651,9 +687,10 @@ z-index:5;
 /* ================================= */
 /* CHAT */
 /* ================================= */
-/*
+
 .chat-widget{
 
+display:none;    
 position:fixed;
 right:25px;
 bottom:120px;
@@ -682,7 +719,7 @@ font-weight:bold;
 padding:20px;
 
 }
-*/
+
 /* ================================= */
 /* GLASS EFFECT */
 /* ================================= */
@@ -707,7 +744,7 @@ display:block;
 /* ========================= */
 
 .logo-header{
-    width: 320px;
+    width: 250px;
     height:auto;
     object-fit:contain;
     transition:.3s ease;
@@ -723,7 +760,7 @@ display:block;
 
 .logo-footer{
 
-    width:220px;
+    width:250px;
     height:auto;
     object-fit:contain;
     margin-bottom:15px;
@@ -738,4 +775,41 @@ display:block;
 .hero-list li{
     margin-bottom:12px;
     font-size:1rem;
+}
+
+/* ===================================== */
+/* MOBILE HERO */
+/* ===================================== */
+
+@media (max-width: 768px){
+
+.hero{
+
+    min-height:auto;
+    padding-top:140px;
+    padding-bottom:60px;
+
+}
+
+.hero-content{
+
+    text-align:center;
+
+}
+
+.hero h1{
+
+    font-size:2.1rem !important;
+    line-height:1.2;
+    margin-bottom:20px;
+
+}
+
+.hero p{
+
+    font-size:1.1rem;
+    line-height:1.7;
+
+}
+
 }
