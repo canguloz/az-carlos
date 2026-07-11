@@ -175,6 +175,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 const msg = encodeURIComponent(`Hola, soy *${data.nombre || ''}* de *${data.empresa || 'mi empresa'}*.\n\nAcabo de enviar una solicitud a través de su formulario web y me gustaría darle seguimiento.\n\n*Servicio solicitado:* ${data.mensaje || ''}\n*Teléfono:* ${data.telefono || ''}\n*Correo:* ${data.email || ''}\n\nQuedo atento a su pronta comunicación.`);
                 setTimeout(() => window.open(`https://wa.me/51924858054?text=${msg}`, '_blank'), 1000);
+                setTimeout(() => {
+                    submitButton.textContent = 'Enviar Solicitud';
+                    submitButton.disabled = false;
+                    form.reset();
+                    if (formFeedback) formFeedback.textContent = '';
+                }, 6000);
             })
             .catch((err) => {
                 submitButton.textContent = 'Enviar Solicitud';
