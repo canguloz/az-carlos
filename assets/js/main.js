@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (contactForm) {
         const EMAILJS_CONFIG = {
-            serviceId: 'service_yk21t5f',
+            serviceId: 'service_zh3z3u7',
             templateIdCliente: 'template_cliente',
             templateIdEmpresa: 'template_empresa',
             publicKey: 'noAekUL_Bc5sR3aKJ'
