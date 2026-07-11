@@ -115,44 +115,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (contactForm) {
+        const EMAILJS_CONFIG = {
+            serviceId: 'TU_SERVICE_ID',
+            templateIdCliente: 'TU_TEMPLATE_CLIENTE',
+            templateIdEmpresa: 'TU_TEMPLATE_EMPRESA',
+            publicKey: 'TU_PUBLIC_KEY'
+        };
+
         contactForm.addEventListener('submit', (event) => {
             event.preventDefault();
 
             const submitButton = contactForm.querySelector('button[type="submit"]');
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData);
+            const fecha = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
+
+            if (typeof emailjs === 'undefined') {
+                if (submitButton) { submitButton.textContent = 'Enviar Solicitud'; submitButton.disabled = false; }
+                if (formFeedback) { formFeedback.textContent = 'Servicio de correo no configurado. Contacta al administrador.'; }
+                return;
+            }
 
             submitButton.textContent = 'Enviando...';
             submitButton.disabled = true;
 
-            fetch('https://formsubmit.co/ajax/contacto@azconsulting.com', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    submitButton.textContent = 'Solicitud enviada';
-                    if (formFeedback) {
-                        formFeedback.textContent = 'Gracias. Te hemos enviado una copia a tu correo y pronto nos pondremos en contacto.';
-                    }
+            emailjs.init(EMAILJS_CONFIG.publicKey);
 
-                    const msg = encodeURIComponent(`Hola, soy ${data.nombre || ''}. Solicito: ${data.mensaje || ''}. Mi celular: ${data.telefono || ''}.`);
-                    window.open(`https://wa.me/51924858054?text=${msg}`, '_blank');
-                } else {
-                    submitButton.textContent = 'Enviar Solicitud';
-                    submitButton.disabled = false;
-                    if (formFeedback) {
-                        formFeedback.textContent = 'Hubo un error al enviar. Intenta de nuevo.';
-                    }
+            const paramsCliente = {
+                to_email: data.email,
+                to_name: data.nombre,
+                from_name: 'AZCONSULTING',
+                message: data.mensaje,
+                telefono: data.telefono,
+                empresa: data.empresa || 'No especificada',
+                fecha: fecha
+            };
+
+            const paramsEmpresa = {
+                to_email: 'contacto@azconsulting.com',
+                to_name: 'Equipo AZCONSULTING',
+                from_name: data.nombre,
+                from_email: data.email,
+                message: data.mensaje,
+                telefono: data.telefono,
+                empresa: data.empresa || 'No especificada',
+                fecha: fecha
+            };
+
+            Promise.all([
+                emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateIdCliente, paramsCliente),
+                emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateIdEmpresa, paramsEmpresa)
+            ])
+            .then(() => {
+                submitButton.textContent = 'Solicitud enviada';
+                if (formFeedback) {
+                    formFeedback.textContent = 'Revisa tu correo, te enviamos una copia. Nos contactaremos pronto.';
                 }
+                const msg = encodeURIComponent(`Hola, soy ${data.nombre || ''}. Solicito: ${data.mensaje || ''}. Mi celular: ${data.telefono || ''}.`);
+                setTimeout(() => window.open(`https://wa.me/51924858054?text=${msg}`, '_blank'), 1000);
             })
             .catch(() => {
                 submitButton.textContent = 'Enviar Solicitud';
                 submitButton.disabled = false;
                 if (formFeedback) {
-                    formFeedback.textContent = 'Hubo un error de conexión. Intenta de nuevo.';
+                    formFeedback.textContent = 'Error al enviar. Verifica los datos e intenta de nuevo.';
                 }
             });
         });
