@@ -123,7 +123,7 @@ section {
     position: relative;
     min-height: 100vh;
     overflow: hidden;
-    padding: 120px 0 100px;
+    padding: 95px 0 80px;
     display: flex;
     align-items: center;
 }
@@ -457,7 +457,7 @@ section {
 
 .scroll-mouse {
     position: absolute;
-    bottom: 30px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -1299,7 +1299,7 @@ footer li {
 @media (max-width: 1199px) {
     .hero {
         min-height: auto;
-        padding: 70px 0 40px;
+        padding: 55px 0 30px;
     }
 
     .hero h1 {
@@ -1388,7 +1388,7 @@ footer li {
     }
 
     .hero {
-        padding: 60px 0 36px;
+        padding: 45px 0 28px;
     }
 
     .hero h1 {
@@ -1483,7 +1483,7 @@ footer li {
 
     .hero {
         min-height: auto;
-        padding: 42px 0 54px;
+        padding: 30px 0 40px;
     }
 
     .hero-badge {
