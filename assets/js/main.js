@@ -117,16 +117,44 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactForm) {
         contactForm.addEventListener('submit', (event) => {
             event.preventDefault();
+
             const submitButton = contactForm.querySelector('button[type="submit"]');
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
 
-            if (submitButton) {
-                submitButton.textContent = 'Solicitud enviada';
-                submitButton.disabled = true;
-            }
+            submitButton.textContent = 'Enviando...';
+            submitButton.disabled = true;
 
-            if (formFeedback) {
-                formFeedback.textContent = 'Gracias. Tu mensaje fue recibido y nos pondremos en contacto pronto.';
-            }
+            fetch('https://formsubmit.co/ajax/contacto@azconsulting.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    submitButton.textContent = 'Solicitud enviada';
+                    if (formFeedback) {
+                        formFeedback.textContent = 'Gracias. Te hemos enviado una copia a tu correo y pronto nos pondremos en contacto.';
+                    }
+
+                    const msg = encodeURIComponent(`Hola, soy ${data.nombre || ''}. Solicito: ${data.mensaje || ''}. Mi celular: ${data.telefono || ''}.`);
+                    window.open(`https://wa.me/51924858054?text=${msg}`, '_blank');
+                } else {
+                    submitButton.textContent = 'Enviar Solicitud';
+                    submitButton.disabled = false;
+                    if (formFeedback) {
+                        formFeedback.textContent = 'Hubo un error al enviar. Intenta de nuevo.';
+                    }
+                }
+            })
+            .catch(() => {
+                submitButton.textContent = 'Enviar Solicitud';
+                submitButton.disabled = false;
+                if (formFeedback) {
+                    formFeedback.textContent = 'Hubo un error de conexión. Intenta de nuevo.';
+                }
+            });
         });
     }
 
