@@ -2066,6 +2066,12 @@ section {
     color: var(--accent);
 }
 
+/* Icono del textarea alineado con el placeholder */
+.input-wrap .fa-comment-dots {
+    top: 18px;
+    transform: none;
+}
+
 .contact-form input,
 .contact-form textarea {
     width: 100%;
