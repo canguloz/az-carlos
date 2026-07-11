@@ -1075,38 +1075,176 @@ section {
 
 .contact-section {
     padding: 110px 0 80px;
+    background: #f9fafb;
 }
 
-.contact-item {
-    margin-bottom: 20px;
-    font-size: 1.1rem;
+.contact-subtitle {
+    color: var(--text-light);
+    font-size: 1.05rem;
+    margin: 15px 0 0;
+    line-height: 1.7;
 }
 
-.contact-item i {
+.contact-subtitle strong {
     color: var(--accent);
-    margin-right: 10px;
+    font-weight: 700;
+}
+
+.contact-info-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--white);
+    padding: 20px 24px;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: all 0.35s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(13,22,48,0.08);
+    border-color: rgba(255,122,0,0.15);
+}
+
+.contact-card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), #ff9a3e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contact-card-icon i {
+    color: var(--white);
+    font-size: 1.2rem;
+}
+
+.contact-card-body h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 2px;
+}
+
+.contact-card-body a {
+    display: block;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: color 0.25s;
+}
+
+.contact-card-body a:hover {
+    color: var(--accent);
+}
+
+.contact-card-body span {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    margin-top: 1px;
 }
 
 .contact-form {
+    background: var(--white);
+    padding: 36px 32px;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(13,22,48,0.06);
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.02em;
 }
 
 .contact-form input,
 .contact-form textarea {
-    padding: 15px;
-    border: 1px solid #ddd;
+    padding: 14px 16px;
+    border: 1.5px solid #e2e8f0;
     border-radius: 10px;
+    background: #fafbfc;
+    font-size: 0.95rem;
+    color: var(--text);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(255,122,0,0.1);
+    background: var(--white);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: #94a3b8;
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 110px;
 }
 
 .contact-form button {
-    background: var(--accent);
-    color: white;
-    padding: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--accent), #ff9a3e);
+    color: var(--white);
+    padding: 16px 32px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    width: 100%;
+}
+
+.contact-form button i {
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.contact-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,122,0,0.3);
+}
+
+.contact-form button:hover i {
+    transform: translateX(4px);
 }
 
 .map-section iframe {
@@ -1578,9 +1716,12 @@ footer li {
         padding: 22px;
     }
 
-    .contact-form input,
-    .contact-form textarea {
-        padding: 13px;
+    .contact-form {
+        padding: 28px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
     }
 
     .map-section iframe {
