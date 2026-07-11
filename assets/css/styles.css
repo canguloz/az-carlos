@@ -1299,6 +1299,7 @@ footer li {
     .hero {
         min-height: auto;
         padding: 45px 0 25px;
+        align-items: flex-start;
     }
 
     .hero h1 {
@@ -1390,6 +1391,7 @@ footer li {
     .hero {
         min-height: auto;
         padding: 35px 0 20px;
+        align-items: flex-start;
     }
 
     .hero h1 {
@@ -1486,6 +1488,7 @@ footer li {
     .hero {
         min-height: auto;
         padding: 25px 0 30px;
+        align-items: flex-start;
     }
 
     .hero-badge {
@@ -1636,7 +1639,8 @@ footer li {
 
 @media (max-width: 576px) {
     .hero {
-        padding: 36px 0 48px;
+        padding: 20px 0 35px;
+        align-items: flex-start;
     }
 
     .hero h1 {
