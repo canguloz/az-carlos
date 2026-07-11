@@ -291,4 +291,54 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    /* ─── Blog trend form ─── */
+    const trendForm = document.getElementById('trendForm');
+    if (trendForm) {
+        trendForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fb = document.getElementById('trend-feedback');
+            const btn = trendForm.querySelector('.tform-submit');
+
+            const data = {
+                nombre: trendForm.querySelector('[name="trend-nombre"]').value,
+                email: trendForm.querySelector('[name="trend-email"]').value,
+                titulo: trendForm.querySelector('[name="trend-titulo"]').value,
+                categoria: trendForm.querySelector('[name="trend-categoria"]').value,
+                descripcion: trendForm.querySelector('[name="trend-descripcion"]').value,
+            };
+
+            if (typeof emailjs !== 'undefined') {
+                btn.textContent = 'Enviando...';
+                btn.disabled = true;
+
+                const fecha = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
+
+                emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateIdEmpresa, {
+                    to_email: 'carlosangulozegarra@gmail.com',
+                    to_name: 'Equipo AZCONSULTING',
+                    from_name: data.nombre,
+                    from_email: data.email,
+                    message: `Nueva tendencia registrada\n\nTítulo: ${data.titulo}\nCategoría: ${data.categoria}\n\n${data.descripcion}`,
+                    telefono: '',
+                    empresa: data.categoria,
+                    fecha: fecha
+                })
+                .then(() => {
+                    if (fb) { fb.textContent = '¡Gracias! Revisaremos tu tendencia y la publicaremos pronto.'; fb.style.color = '#16a34a'; }
+                    btn.textContent = 'Enviar tendencia';
+                    btn.disabled = false;
+                    trendForm.reset();
+                    setTimeout(() => { if (fb) { fb.textContent = ''; fb.style.color = ''; } }, 5000);
+                })
+                .catch(() => {
+                    if (fb) { fb.textContent = 'Error al enviar. Intenta de nuevo.'; fb.style.color = '#dc2626'; }
+                    btn.textContent = 'Enviar tendencia';
+                    btn.disabled = false;
+                });
+            } else {
+                if (fb) { fb.textContent = 'Servicio no disponible. Intenta más tarde.'; fb.style.color = '#dc2626'; }
+            }
+        });
+    }
 });

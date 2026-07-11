@@ -1045,94 +1045,154 @@
 
     <div class="container">
 
-        <div class="section-header text-center">
+        <div class="section-header text-center" data-aos="fade-up">
 
             <span class="section-badge">
                 BLOG TECNOLÓGICO
             </span>
 
             <h2 class="section-title">
-
                 Últimas Tendencias Digitales
-
             </h2>
+
+            <p class="blog-subtitle">
+                Exploramos las innovaciones que están transformando el mundo empresarial.
+            </p>
 
         </div>
 
-        <div class="row mt-5">
+        <div class="row g-4 mt-4">
 
             <div class="col-lg-4">
-
-                <div class="blog-card">
-
-                    <img src="assets/img/blog1.jpg" loading="lazy" decoding="async" alt="IA empresarial">
-
-                    <div class="blog-content">
-
-                        <span>Inteligencia Artificial</span>
-
-                        <h4>
-                            IA Empresarial en 2026
-                        </h4>
-
-                        <p>
-                            Cómo las empresas están automatizando procesos.
-                        </p>
-
+                <div class="blog-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="blog-img-wrap">
+                        <img src="assets/img/blog1.jpg" loading="lazy" decoding="async" alt="IA empresarial">
+                        <span class="blog-category">Inteligencia Artificial</span>
                     </div>
-
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 15 Ene 2026</span>
+                            <span><i class="far fa-clock"></i> 5 min</span>
+                        </div>
+                        <h4>IA Empresarial en 2026</h4>
+                        <p>Cómo las empresas están automatizando procesos clave con inteligencia artificial generativa.</p>
+                        <div class="blog-footer">
+                            <div class="blog-author">
+                                <span class="blog-author-avatar">AZ</span>
+                                <span>AZCONSULTING</span>
+                            </div>
+                            <a href="#" class="blog-read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
                 </div>
-
             </div>
 
             <div class="col-lg-4">
-
-                <div class="blog-card">
-
-                    <img src="assets/img/blog2.jpg" loading="lazy" decoding="async" alt="Ciberseguridad">
-
-                    <div class="blog-content">
-
-                        <span>Ciberseguridad</span>
-
-                        <h4>
-                            Protección de Datos
-                        </h4>
-
-                        <p>
-                            Estrategias modernas de seguridad digital.
-                        </p>
-
+                <div class="blog-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="blog-img-wrap">
+                        <img src="assets/img/blog2.jpg" loading="lazy" decoding="async" alt="Ciberseguridad">
+                        <span class="blog-category">Ciberseguridad</span>
                     </div>
-
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 8 Ene 2026</span>
+                            <span><i class="far fa-clock"></i> 4 min</span>
+                        </div>
+                        <h4>Protección de Datos</h4>
+                        <p>Estrategias modernas de seguridad digital para proteger tu negocio en la nube.</p>
+                        <div class="blog-footer">
+                            <div class="blog-author">
+                                <span class="blog-author-avatar">AZ</span>
+                                <span>AZCONSULTING</span>
+                            </div>
+                            <a href="#" class="blog-read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
                 </div>
-
             </div>
 
             <div class="col-lg-4">
-
-                <div class="blog-card">
-
-                    <img src="assets/img/blog3.jpg" loading="lazy" decoding="async" alt="Cloud computing">
-
-                    <div class="blog-content">
-
-                        <span>Cloud Computing</span>
-
-                        <h4>
-                            Infraestructura Escalable
-                        </h4>
-
-                        <p>
-                            Migración empresarial hacia la nube.
-                        </p>
-
+                <div class="blog-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="blog-img-wrap">
+                        <img src="assets/img/blog3.jpg" loading="lazy" decoding="async" alt="Cloud computing">
+                        <span class="blog-category">Cloud Computing</span>
                     </div>
-
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 2 Ene 2026</span>
+                            <span><i class="far fa-clock"></i> 6 min</span>
+                        </div>
+                        <h4>Infraestructura Escalable</h4>
+                        <p>Migración empresarial hacia la nube con estrategias híbridas y multi-cloud.</p>
+                        <div class="blog-footer">
+                            <div class="blog-author">
+                                <span class="blog-author-avatar">AZ</span>
+                                <span>AZCONSULTING</span>
+                            </div>
+                            <a href="#" class="blog-read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
                 </div>
-
             </div>
 
+        </div>
+
+        <div class="blog-trend-section" data-aos="fade-up">
+            <div class="blog-trend-toggle" onclick="this.nextElementSibling.classList.toggle('open');this.classList.toggle('active')">
+                <i class="fas fa-lightbulb"></i>
+                <span>Registra una tendencia tecnológica</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+
+            <form class="blog-trend-form" id="trendForm">
+                <div class="trend-form-header">
+                    <h4>Comparte una tendencia digital</h4>
+                    <p>¿Has identificado una nueva tecnología o innovación? Cuéntanos para compartirla con la comunidad.</p>
+                </div>
+
+                <div class="tform-row">
+                    <div class="tform-group">
+                        <label for="trend-nombre">Tu nombre</label>
+                        <input type="text" id="trend-nombre" name="trend-nombre" placeholder="Ej: Carlos Angulo" required>
+                    </div>
+                    <div class="tform-group">
+                        <label for="trend-email">Correo Electrónico</label>
+                        <input type="email" id="trend-email" name="trend-email" placeholder="tu@correo.com" required>
+                    </div>
+                </div>
+
+                <div class="tform-group">
+                    <label for="trend-titulo">Título de la tendencia</label>
+                    <input type="text" id="trend-titulo" name="trend-titulo" placeholder="Ej: Edge Computing en retail" required>
+                </div>
+
+                <div class="tform-group">
+                    <label for="trend-categoria">Categoría</label>
+                    <select id="trend-categoria" name="trend-categoria" required>
+                        <option value="">Selecciona una categoría</option>
+                        <option value="Inteligencia Artificial">Inteligencia Artificial</option>
+                        <option value="Ciberseguridad">Ciberseguridad</option>
+                        <option value="Cloud Computing">Cloud Computing</option>
+                        <option value="IoT">IoT</option>
+                        <option value="Blockchain">Blockchain</option>
+                        <option value="Transformación Digital">Transformación Digital</option>
+                        <option value="Automatización">Automatización</option>
+                        <option value="Otra">Otra</option>
+                    </select>
+                </div>
+
+                <div class="tform-group">
+                    <label for="trend-descripcion">Descripción</label>
+                    <textarea id="trend-descripcion" name="trend-descripcion" rows="4" placeholder="Describe la tendencia, su impacto y por qué es relevante..." required></textarea>
+                </div>
+
+                <button type="submit" class="tform-submit">
+                    <span>Enviar tendencia</span>
+                    <i class="fas fa-rocket"></i>
+                </button>
+
+                <p class="tform-feedback" id="trend-feedback"></p>
+            </form>
         </div>
 
     </div>
