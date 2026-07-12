@@ -2495,11 +2495,22 @@ footer::before {
     border-radius: 2px;
 }
 
+.footer-brand-col {
+    text-align: center;
+}
+
+.footer-brand-col .footer-social {
+    justify-content: center;
+}
+
 .footer-desc {
     font-size: 0.9rem;
     line-height: 1.7;
     color: #94a3b8;
     margin: 18px 0 24px;
+    max-width: 360px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .footer-social {
