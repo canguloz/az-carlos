@@ -280,10 +280,16 @@ section {
     box-shadow: var(--glass-shadow);
     border: var(--glass-border);
     margin-top: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
     text-align: center;
     position: relative;
     overflow: hidden;
+    animation: cardFloat 6s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
 }
 
 .hero-team-card::before {
@@ -299,7 +305,8 @@ section {
 
 .hero-team-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 45px rgba(13, 22, 48, 0.12);
+    box-shadow: 0 20px 50px rgba(13, 22, 48, 0.15);
+    animation-play-state: paused;
 }
 
 .hero-team-card h3 {
@@ -335,7 +342,7 @@ section {
 .member {
     text-align: center;
     flex: 1;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     cursor: default;
     position: relative;
 }
@@ -352,12 +359,39 @@ section {
     border-radius: 50%;
     padding: 4px;
     background: linear-gradient(135deg, var(--accent), #FFB067);
+    background-size: 200% 200%;
+    animation: gradientRotate 4s ease infinite;
     box-shadow: 0 8px 25px rgba(255, 122, 0, 0.25);
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+}
+
+@keyframes gradientRotate {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.member-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #FFB067, var(--accent));
+    background-size: 200% 200%;
+    animation: gradientRotate 4s ease infinite;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    filter: blur(8px);
+}
+
+.member:hover .member-img-wrap::after {
+    opacity: 0.6;
 }
 
 .member:hover .member-img-wrap {
-    box-shadow: 0 12px 35px rgba(255, 122, 0, 0.4);
+    transform: scale(1.08);
+    box-shadow: 0 16px 40px rgba(255, 122, 0, 0.45);
 }
 
 .member-img-wrap img {
@@ -367,33 +401,50 @@ section {
     border-radius: 50%;
     display: block;
     background: #fff;
+    transition: transform 0.4s ease;
+}
+
+.member:hover .member-img-wrap img {
+    transform: scale(1.05);
 }
 
 .member-social {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: rgba(13, 22, 48, 0.7);
+    background: rgba(13, 22, 48, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transform: scale(0.85);
+    transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
 .member:hover .member-social {
     opacity: 1;
+    transform: scale(1);
 }
 
 .member-social a {
     color: #fff;
     font-size: 1.3rem;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, color 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
 }
 
 .member-social a:hover {
     transform: scale(1.2);
     color: var(--accent);
+    background: rgba(255,122,0,0.2);
 }
 
 .member-name {
