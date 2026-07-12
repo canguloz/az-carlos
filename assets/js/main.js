@@ -14,10 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateNavbar = () => {
         if (!navbar) return;
-
-        navbar.style.boxShadow = window.scrollY > 50
-            ? '0 4px 15px rgba(0,0,0,.08)'
-            : 'none';
+        navbar.classList.toggle('navbar-scrolled', window.scrollY > 50);
     };
 
     window.addEventListener('scroll', updateNavbar, { passive: true });
