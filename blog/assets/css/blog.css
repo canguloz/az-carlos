@@ -1,0 +1,33 @@
+.blog-hero {
+    position: relative;
+    padding: 160px 0 100px;
+    border-bottom: 1px solid rgba(13, 22, 48, 0.05);
+}
+
+.blog-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    bottom: -80px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: heroZoom 20s ease-in-out infinite alternate;
+    z-index: 0;
+}
+
+.blog-hero-ia::before {
+    background-image: linear-gradient(rgba(248, 250, 252, 0.55), rgba(248, 250, 252, 0.35)), url('../img/bg-ia.jpg');
+}
+
+.blog-hero-ciber::before {
+    background-image: linear-gradient(rgba(248, 250, 252, 0.55), rgba(248, 250, 252, 0.35)), url('../img/bg-ciber.jpg');
+}
+
+.blog-hero-nube::before {
+    background-image: linear-gradient(rgba(248, 250, 252, 0.55), rgba(248, 250, 252, 0.35)), url('../img/bg-nube.jpg');
+}
+
+#btnTop {
+    bottom: 50px;
+}
