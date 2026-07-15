@@ -211,6 +211,9 @@ REGLAS:
       background: #0d1630;
       color: #fff;
     }
+    .az-emoji {
+      font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    }
     @media (max-width: 480px) {
       .az-chatbot-panel { width: calc(100vw - 40px); right: 20px; }
     }
@@ -261,7 +264,11 @@ REGLAS:
   });
 
   function formatText(text) {
-    return text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    return text
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/\n/g, '<br>')
+      .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '<span class="az-emoji">$&</span>');
   }
 
   function addMessage(text, role) {
