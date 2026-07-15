@@ -235,7 +235,14 @@ REGLAS:
       margin: 0 0.04em;
     }
     @media (max-width: 640px) {
-      .az-chatbot-panel { width: calc(100vw - 40px); }
+      .az-chatbot-panel { width: calc(100vw - 40px); max-height: 380px; bottom: 100px; }
+      .az-chatbot-messages { max-height: 240px; }
+      .az-chatbot-header { padding: 12px 16px; font-size: 0.85rem; }
+      .az-chatbot-msg { font-size: 0.82rem; padding: 8px 12px; }
+      .az-chatbot-input { padding: 8px; }
+      .az-chatbot-input input { padding: 8px 12px; font-size: 0.82rem; }
+      .az-chatbot-input button { width: 36px; height: 36px; font-size: 0.85rem; }
+      .az-chatbot-btn { width: 48px; height: 48px; font-size: 22px; bottom: 100px; }
     }
   `;
   document.head.appendChild(styles);
