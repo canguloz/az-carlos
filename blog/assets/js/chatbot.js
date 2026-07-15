@@ -199,7 +199,7 @@ REGLAS:
     <div class="az-chatbot-messages" id="azChatMessages">
       <div class="az-chatbot-msg bot">
         <span class="msg-icon">AZCONSULTING</span>
-        ¡Hola! Soy el asistente virtual de AZCONSULTING. Preguntame sobre nuestros servicios de TI, desarrollo web, infraestructura o cualquier consulta tecnológica.
+        ¡Hola! Soy el asistente de <strong>AZCONSULTING</strong> 💻 Preguntame sobre desarrollo web, apps, hosting, ciberseguridad o infraestructura TI.
       </div>
     </div>
     <div class="az-chatbot-input">
@@ -219,7 +219,7 @@ REGLAS:
     const div = document.createElement('div');
     div.className = `az-chatbot-msg ${role}`;
     if (role === 'bot') {
-      div.innerHTML = `<span class="msg-icon">AZCONSULTING</span>${text}`;
+      div.innerHTML = `<span class="msg-icon">AZCONSULTING</span>${text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}`;
     } else {
       div.textContent = text;
     }
