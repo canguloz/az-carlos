@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
+Disallow: /workers/
+Disallow: /docs/
+
 Sitemap: https://canguloz.github.io/azconsulting/sitemap.xml

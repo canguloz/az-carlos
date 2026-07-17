@@ -38,8 +38,18 @@
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Preload hero image para LCP óptimo -->
+    <link rel="preload" as="image"
+          href="assets/img/hero-consultoria-768w.avif"
+          imagesrcset="assets/img/hero-consultoria-480w.avif 480w,
+                       assets/img/hero-consultoria-768w.avif 768w,
+                       assets/img/hero-consultoria-1200w.avif 1200w"
+          imagesizes="(max-width:480px) 480px,(max-width:768px) 768px,1200px">
+
+    <!-- Bootstrap — carga no bloqueante -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"></noscript>
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" media="print" onload="this.media='all'" crossorigin="anonymous">
@@ -55,7 +65,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="assets/css/styles.css?v=2">
+    <link rel="stylesheet" href="assets/css/styles.css?v=3">
 
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
@@ -63,8 +73,8 @@
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
 
-    <!-- PARTICLES -->
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js" defer></script>
+    <!-- PARTICLES — carga diferida post-load para no bloquear el hilo principal -->
+    <!-- Se carga dinámicamente en main.js después del evento window.load -->
 
     <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
@@ -94,9 +104,131 @@
         "longitude": "-79.0300"
       },
       "sameAs": [
-        "https://www.facebook.com/",
-        "https://www.instagram.com/",
-        "https://www.youtube.com/"
+        "https://www.facebook.com/azconsulting.trujillo",
+        "https://www.linkedin.com/in/carlos-angulo-zegarra-046768188/",
+        "https://www.instagram.com/azconsulting",
+        "https://www.youtube.com/@azconsulting"
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuánto tiempo toma desarrollar una página web profesional?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El tiempo varía según la complejidad del proyecto. Una landing page toma entre 5 y 10 días hábiles, mientras que un sitio corporativo completo puede llevar de 2 a 4 semanas. Te daremos un cronograma detallado en el diagnóstico inicial gratuito."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Trabajan con empresas fuera de Trujillo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "¡Sí! Trabajamos de forma remota con empresas de todo el Perú y Latinoamérica. Para proyectos de infraestructura física, cubrimos presencialmente toda la región La Libertad. El primer diagnóstico es siempre virtual y gratuito."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Puedo solicitar mantenimiento después del lanzamiento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutamente. Ofrecemos planes de mantenimiento mensual que incluyen actualizaciones de seguridad, backups automáticos, optimización de rendimiento y soporte técnico. También tenemos monitoreo remoto 24/7 para sistemas críticos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Desarrollan aplicaciones móviles?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Desarrollamos aplicaciones móviles con Flutter (iOS y Android desde un mismo código) y aplicaciones web progresivas (PWA) que funcionan como apps nativas. Integramos con Firebase, APIs REST y sistemas de pago."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué incluye el diagnóstico virtual gratuito?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Una sesión de 30-60 minutos por videollamada donde evaluamos tu situación tecnológica actual, identificamos oportunidades de mejora y te presentamos un plan de acción personalizado sin ningún compromiso de contratación."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Ofrecen servicios de ciberseguridad?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Implementamos soluciones de seguridad perimetral (firewalls, VPN), auditorías de vulnerabilidades, protección antispam en correos corporativos, certificados SSL y capacitación al equipo sobre buenas prácticas de seguridad digital."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo se manejan los pagos y la facturación?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Emitimos factura electrónica por todos nuestros servicios. Los proyectos se pagan en etapas: un adelanto al inicio y el saldo al entregar. Aceptamos transferencias bancarias, Yape y Plin. Para consultar planes de financiamiento, contáctanos por WhatsApp."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Service",
+          "name": "Diseño de Páginas Web Profesionales",
+          "description": "Creamos sitios web modernos y optimizados para ventas, con diseño responsivo y alto rendimiento.",
+          "provider": { "@type": "Organization", "name": "AZCONSULTING" },
+          "areaServed": "La Libertad, Perú",
+          "serviceType": "Desarrollo Web"
+        },
+        {
+          "@type": "Service",
+          "name": "Desarrollo de Aplicaciones Web a Medida",
+          "description": "Software empresarial personalizado que automatiza procesos y mejora la eficiencia operativa de tu negocio.",
+          "provider": { "@type": "Organization", "name": "AZCONSULTING" },
+          "areaServed": "La Libertad, Perú",
+          "serviceType": "Desarrollo de Software"
+        },
+        {
+          "@type": "Service",
+          "name": "Automatización de Servicios y Procesos TI",
+          "description": "Optimizamos flujos de trabajo con inteligencia artificial y bots para reducir costos operativos.",
+          "provider": { "@type": "Organization", "name": "AZCONSULTING" },
+          "areaServed": "La Libertad, Perú",
+          "serviceType": "Automatización TI"
+        },
+        {
+          "@type": "Service",
+          "name": "Correos Corporativos de Alta Seguridad",
+          "description": "Cuentas de email empresariales con dominio propio, cifrado SSL y protección antispam avanzada.",
+          "provider": { "@type": "Organization", "name": "AZCONSULTING" },
+          "areaServed": "La Libertad, Perú",
+          "serviceType": "Correo Corporativo"
+        },
+        {
+          "@type": "Service",
+          "name": "Hosting Empresarial y Dominios",
+          "description": "Alojamiento web rápido y seguro con registro de dominios, certificados SSL y soporte técnico 24/7.",
+          "provider": { "@type": "Organization", "name": "AZCONSULTING" },
+          "areaServed": "La Libertad, Perú",
+          "serviceType": "Hosting y Dominios"
+        },
+        {
+          "@type": "Service",
+          "name": "Infraestructura TI y Soporte Especializado",
+          "description": "Gestión de servidores, redes y soporte técnico especializado para mantener tu operación siempre activa.",
+          "provider": { "@type": "Organization", "name": "AZCONSULTING" },
+          "areaServed": "La Libertad, Perú",
+          "serviceType": "Infraestructura TI"
+        }
       ]
     }
     </script>
@@ -292,7 +424,8 @@
                                 <picture>
                                     <source srcset="assets/img/teams1.avif" type="image/avif">
                                     <source srcset="assets/img/teams1.webp" type="image/webp">
-                                    <img src="assets/img/teams1.jpeg" alt="Consultor TI AZCONSULTING" width="777" height="996" loading="lazy" decoding="async">
+                                    <!-- fetchpriority=high + sin lazy: imagen crítica above-the-fold (LCP) -->
+                                    <img src="assets/img/teams1.jpeg" alt="Carlos Angulo, Consultor TI AZCONSULTING Trujillo" width="777" height="996" fetchpriority="high" decoding="async">
                                 </picture>
                                 <div class="member-social">
                                     <a href="https://www.linkedin.com/in/carlos-angulo-zegarra-046768188/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Carlos">
@@ -898,7 +1031,7 @@
             </span>
 
             <h2 class="section-title">
-                Casos de Éxito Destacados
+                Portafolio de Proyectos
             </h2>
 
             <p class="project-subtitle">
@@ -1005,7 +1138,7 @@
             </span>
 
             <h2 class="section-title">
-                Casos de Éxito
+                Resultados y Métricas de Impacto
             </h2>
 
             <p class="success-subtitle">
@@ -1294,13 +1427,13 @@
                 <picture><source srcset="assets/img/socios/webp/cisco.webp" type="image/webp"><img src="assets/img/socios/cisco.png" loading="lazy" decoding="async" alt="Cisco" width="348" height="205"></picture>
                 <picture><source srcset="assets/img/socios/webp/dell.webp" type="image/webp"><img src="assets/img/socios/dell.png" loading="lazy" decoding="async" alt="Dell" width="609" height="410"></picture>
 
-                <picture><source srcset="assets/img/socios/webp/amazonforetag.webp" type="image/webp"><img src="assets/img/socios/amazonforetag.png" loading="lazy" decoding="async" alt="Amazon For the Enterprise" width="530" height="60"></picture>
-                <picture><source srcset="assets/img/socios/webp/microsoft.webp" type="image/webp"><img src="assets/img/socios/microsoft.png" loading="lazy" decoding="async" alt="Microsoft" width="530" height="60"></picture>
-                <picture><source srcset="assets/img/socios/webp/aws.webp" type="image/webp"><img src="assets/img/socios/aws.png" loading="lazy" decoding="async" alt="AWS" width="320" height="320"></picture>
-                <picture><source srcset="assets/img/socios/webp/google.webp" type="image/webp"><img src="assets/img/socios/google.png" loading="lazy" decoding="async" alt="Google" width="530" height="60"></picture>
-                <picture><source srcset="assets/img/socios/webp/oracle.webp" type="image/webp"><img src="assets/img/socios/oracle.png" loading="lazy" decoding="async" alt="Oracle" width="530" height="60"></picture>
-                <picture><source srcset="assets/img/socios/webp/cisco.webp" type="image/webp"><img src="assets/img/socios/cisco.png" loading="lazy" decoding="async" alt="Cisco" width="348" height="205"></picture>
-                <picture><source srcset="assets/img/socios/webp/dell.webp" type="image/webp"><img src="assets/img/socios/dell.png" loading="lazy" decoding="async" alt="Dell" width="609" height="410"></picture>
+                <picture><source srcset="assets/img/socios/webp/amazonforetag.webp" type="image/webp"><img src="assets/img/socios/amazonforetag.png" loading="lazy" decoding="async" alt="" aria-hidden="true" width="530" height="60"></picture>
+                <picture><source srcset="assets/img/socios/webp/microsoft.webp" type="image/webp"><img src="assets/img/socios/microsoft.png" loading="lazy" decoding="async" alt="" aria-hidden="true" width="530" height="60"></picture>
+                <picture><source srcset="assets/img/socios/webp/aws.webp" type="image/webp"><img src="assets/img/socios/aws.png" loading="lazy" decoding="async" alt="" aria-hidden="true" width="320" height="320"></picture>
+                <picture><source srcset="assets/img/socios/webp/google.webp" type="image/webp"><img src="assets/img/socios/google.png" loading="lazy" decoding="async" alt="" aria-hidden="true" width="530" height="60"></picture>
+                <picture><source srcset="assets/img/socios/webp/oracle.webp" type="image/webp"><img src="assets/img/socios/oracle.png" loading="lazy" decoding="async" alt="" aria-hidden="true" width="530" height="60"></picture>
+                <picture><source srcset="assets/img/socios/webp/cisco.webp" type="image/webp"><img src="assets/img/socios/cisco.png" loading="lazy" decoding="async" alt="" aria-hidden="true" width="348" height="205"></picture>
+                <picture><source srcset="assets/img/socios/webp/dell.webp" type="image/webp"><img src="assets/img/socios/dell.png" loading="lazy" decoding="async" alt="" aria-hidden="true" width="609" height="410"></picture>
 
             </div>
 
@@ -1351,7 +1484,7 @@
                         <picture>
                             <source srcset="assets/img/blog1.avif" type="image/avif">
                             <source srcset="assets/img/blog1.webp" type="image/webp">
-                            <img src="assets/img/blog1.jpg" loading="lazy" decoding="async" alt="IA empresarial">
+                            <img src="assets/img/blog1.jpg" loading="lazy" decoding="async" alt="Inteligencia Artificial generativa en empresas peruanas 2026" width="800" height="534">
                         </picture>
                         <span class="blog-category">Inteligencia Artificial</span>
                     </div>
@@ -1379,7 +1512,7 @@
                         <picture>
                             <source srcset="assets/img/blog2.avif" type="image/avif">
                             <source srcset="assets/img/blog2.webp" type="image/webp">
-                            <img src="assets/img/blog2.jpg" loading="lazy" decoding="async" alt="Ciberseguridad">
+                            <img src="assets/img/blog2.jpg" loading="lazy" decoding="async" alt="Estrategias de ciberseguridad para proteger datos empresariales en la nube" width="800" height="534">
                         </picture>
                         <span class="blog-category">Ciberseguridad</span>
                     </div>
@@ -1407,7 +1540,7 @@
                         <picture>
                             <source srcset="assets/img/blog3.avif" type="image/avif">
                             <source srcset="assets/img/blog3.webp" type="image/webp">
-                            <img src="assets/img/blog3.jpg" loading="lazy" decoding="async" alt="Cloud computing">
+                            <img src="assets/img/blog3.jpg" loading="lazy" decoding="async" alt="Migración empresarial a la nube con infraestructura híbrida AWS y Azure" width="800" height="534">
                         </picture>
                         <span class="blog-category">Cloud Computing</span>
                     </div>
@@ -1436,7 +1569,7 @@
                         <picture>
                             <source srcset="assets/img/blog2.avif" type="image/avif">
                             <source srcset="assets/img/blog2.webp" type="image/webp">
-                            <img src="assets/img/blog2.jpg" loading="lazy" decoding="async" alt="Desarrollo web moderno 2026">
+                            <img src="assets/img/blog2.jpg" loading="lazy" decoding="async" alt="Frameworks web modernos React Vue Astro para desarrollo frontend 2026" width="800" height="534">
                         </picture>
                         <span class="blog-category">Desarrollo Web</span>
                     </div>
@@ -1465,7 +1598,7 @@
                         <picture>
                             <source srcset="assets/img/blog1.avif" type="image/avif">
                             <source srcset="assets/img/blog1.webp" type="image/webp">
-                            <img src="assets/img/blog1.jpg" loading="lazy" decoding="async" alt="ChatBots con IA para empresas">
+                            <img src="assets/img/blog1.jpg" loading="lazy" decoding="async" alt="Chatbots con Inteligencia Artificial para atención al cliente empresarial" width="800" height="534">
                         </picture>
                         <span class="blog-category">Inteligencia Artificial</span>
                     </div>

@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     if (window.AOS) {
-        AOS.init({ duration: 1200, once: true });
+        AOS.init({
+            duration: 700,      // Reducido de 1200ms → 700ms para animaciones más ágiles
+            once: true,         // Solo anima una vez (mejor rendimiento)
+            offset: 60,         // Dispara antes para que no se vea el salto
+            easing: 'ease-out-cubic'
+        });
     }
 
     // Refresca AOS al redimensionar y mantiene la posición relativa
@@ -57,33 +62,71 @@ document.addEventListener('DOMContentLoaded', () => {
         sections.forEach((section) => observer.observe(section));
     }
 
-    counters.forEach((counter) => {
+    // Función que anima un contador individual
+    function animateCounter(counter) {
         const target = Number(counter.getAttribute('data-target') || 0);
         const suffix = counter.getAttribute('data-suffix') || '';
-        const increment = target / 100;
+        const duration = 1400; // ms totales de la animación
+        const steps = 60;
+        const increment = target / steps;
+        let current = 0;
+        let step = 0;
 
-        const updateCounter = () => {
-            const current = Number(String(counter.textContent).replace(/[^0-9.]/g, '') || 0);
-
-            if (current < target) {
-                counter.textContent = `${Math.ceil(current + increment)}${suffix}`;
-                window.setTimeout(updateCounter, 20);
+        const tick = () => {
+            step++;
+            // Easing: ease-out cuadrático para ralentizar al final
+            const progress = step / steps;
+            const eased = 1 - Math.pow(1 - progress, 3);
+            current = Math.round(eased * target);
+            counter.textContent = `${current}${suffix}`;
+            if (step < steps) {
+                requestAnimationFrame(tick);
             } else {
                 counter.textContent = `${target}${suffix}`;
             }
         };
+        requestAnimationFrame(tick);
+    }
 
-        updateCounter();
-    });
+    // Observar cada contador: animar solo cuando entra en viewport
+    if ('IntersectionObserver' in window) {
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    counterObserver.unobserve(entry.target); // solo una vez
+                }
+            });
+        }, { threshold: 0.4 });
+
+        counters.forEach(counter => counterObserver.observe(counter));
+    } else {
+        // Fallback para navegadores muy antiguos
+        counters.forEach(animateCounter);
+    }
 
     if (preloader) {
+        // Spinner animado con JS (requestAnimationFrame) para que gire SIEMPRE,
+        // sin que el SO/navegador (prefers-reduced-motion) lo bloquee.
+        const rings = preloader.querySelectorAll('.ring');
+        let angle = 0;
+        let lastTs = performance.now();
+        let rafId = requestAnimationFrame(function spin(ts) {
+            const dt = ts - lastTs;
+            lastTs = ts;
+            angle = (angle + dt * 0.3) % 360;
+            rings.forEach((r, i) => { r.style.transform = `rotate(${angle + i * 40}deg)`; });
+            rafId = requestAnimationFrame(spin);
+        });
+
         window.addEventListener('load', () => {
             setTimeout(() => {
+                cancelAnimationFrame(rafId);
                 preloader.style.opacity = '0';
                 setTimeout(() => {
                     preloader.style.display = 'none';
                 }, 400);
-            }, 300);
+            }, 800);
         });
     }
 
@@ -126,20 +169,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (typeof gsap !== 'undefined') {
-        gsap.from('.hero h1', { y: 60, duration: 1.2 });
-        gsap.from('.hero p', { y: 60, opacity: 0, duration: 1.8, ease: 'power3.out' });
+        gsap.from('.hero h1', { y: 60, duration: 1.0, ease: 'power3.out' });
+        gsap.from('.hero p', { y: 40, opacity: 0, duration: 1.2, delay: 0.2, ease: 'power3.out' });
     }
 
-    if (document.getElementById('particles-js') && typeof tsParticles !== 'undefined') {
-        tsParticles.load('particles-js', {
-            background: { color: 'transparent' },
-            particles: {
-                number: { value: 80 },
-                color: { value: '#00c3ff' },
-                links: { enable: true, distance: 120 },
-                move: { enable: true, speed: 1 }
-            }
-        });
+    // tsParticles: carga dinámica post window.load para no bloquear el hilo principal
+    // Se carga el bundle completo solo una vez que la página está completamente lista
+    const initParticles = () => {
+        if (document.getElementById('particles-js')) {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js';
+            script.onload = () => {
+                if (typeof tsParticles === 'undefined') return;
+                tsParticles.load('particles-js', {
+                    background: { color: 'transparent' },
+                    fpsLimit: 40,                          // Limitar FPS para reducir lag en móvil
+                    particles: {
+                        number: {
+                            value: 40,                     // Reducido de 80 → 40 (menos carga de CPU)
+                            density: { enable: true, area: 800 }
+                        },
+                        color: { value: '#00c3ff' },
+                        links: {
+                            enable: true,
+                            distance: 130,
+                            opacity: 0.35,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 0.8,                    // Reducido de 1 → 0.8 para suavidad
+                            outModes: { default: 'bounce' }
+                        },
+                        size: { value: { min: 1, max: 2.5 } },
+                        opacity: { value: { min: 0.3, max: 0.7 } }
+                    },
+                    detectRetina: true
+                });
+            };
+            document.head.appendChild(script);
+        }
+    };
+
+    if (document.readyState === 'complete') {
+        // Si DOMContentLoaded tardó mucho y ya cargó todo
+        setTimeout(initParticles, 200);
+    } else {
+        window.addEventListener('load', () => setTimeout(initParticles, 200), { once: true });
     }
 
     const EMAILJS_CONFIG = {

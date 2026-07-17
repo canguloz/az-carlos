@@ -7,16 +7,34 @@
   "background_color": "#081120",
   "theme_color": "#0d1630",
   "lang": "es-PE",
+  "orientation": "any",
+  "categories": ["business", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Solicitar cotización",
+      "short_name": "Cotizar",
+      "url": "/azconsulting/#contacto",
+      "description": "Contacta al equipo de AZCONSULTING"
+    },
+    {
+      "name": "Servicios",
+      "short_name": "Servicios",
+      "url": "/azconsulting/#servicios",
+      "description": "Ver servicios TI"
+    }
+  ],
   "icons": [
     {
       "src": "assets/img/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "assets/img/icon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

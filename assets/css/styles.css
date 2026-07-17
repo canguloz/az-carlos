@@ -44,6 +44,34 @@ body {
     }
 }
 
+/* ─── Accesibilidad: desactivar TODAS las animaciones si el usuario lo solicita ───
+   Cubre a usuarios con motion sickness, dispositivos lentos y batería baja.
+   También elimina el lag reportado en equipos de gama baja. */
+@media (prefers-reduced-motion: reduce) {
+    *:not(#preloader):not(#preloader *),
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Deshabilitar AOS */
+    [data-aos] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    /* Excepción: el spinner del preloader es una animación esencial de progreso,
+       no decorativa (permitido por WCAG). Se mantiene girando. */
+    #preloader .ring {
+        animation-duration: 1.2s !important;
+        animation-iteration-count: infinite !important;
+    }
+}
+
 body.theme-transitioning,
 body.theme-transitioning *,
 body.theme-transitioning *::before,
@@ -114,6 +142,35 @@ img {
     display: block;
     height: auto;
     max-width: 100%;
+}
+
+/* ─── Composición GPU para elementos animados frecuentemente ───
+   Promueve estos elementos a su propia capa de composición,
+   eliminando el jank (saltos) durante animaciones y scroll. */
+.hero-team-card,
+.partner-track,
+.about-badge-float,
+.loader .ring,
+.whatsapp-float,
+.az-chat-fab,
+.az-chat-panel,
+#btnTop {
+    will-change: transform;
+    transform: translateZ(0); /* Fuerza capa GPU en Safari */
+}
+
+/* El slider de socios necesita composición para el scroll suave */
+.partner-slider {
+    will-change: scroll-position;
+}
+
+/* Cards con hover 3D: solo activar will-change en hover para no consumir memoria innecesaria */
+.service-card:hover,
+.blog-card:hover,
+.project-card:hover,
+.pricing-card:hover,
+.testimonial-card:hover {
+    will-change: transform, box-shadow;
 }
 
 section {
@@ -2953,7 +3010,6 @@ footer::before {
     border: 4px solid transparent;
     border-top: 4px solid #00c3ff;
     border-radius: 50%;
-    animation: spin 1.2s linear infinite;
 }
 
 .ring:nth-child(2) {
