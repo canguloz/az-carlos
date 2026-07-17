@@ -3,6 +3,24 @@ document.addEventListener('DOMContentLoaded', () => {
         AOS.init({ duration: 1200, once: true });
     }
 
+    // Refresca AOS al redimensionar y mantiene la posición relativa
+    let resizeTimer;
+    let scrollPercent;
+    window.addEventListener('resize', () => {
+        if (!scrollPercent) {
+            scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+        }
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (window.AOS) AOS.refresh();
+            if (scrollPercent > 0) {
+                const newScroll = scrollPercent * (document.documentElement.scrollHeight - window.innerHeight);
+                window.scrollTo({ top: newScroll, behavior: 'auto' });
+            }
+            scrollPercent = null;
+        }, 300);
+    });
+
     const navbar = document.querySelector('.custom-navbar');
     const preloader = document.getElementById('preloader');
     const btnTop = document.getElementById('btnTop');
@@ -189,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     submitButton.textContent = 'Enviar Solicitud';
                     submitButton.disabled = false;
-                    form.reset();
+                    contactForm.reset();
                     if (formFeedback) {
                         formFeedback.textContent = '';
                         formFeedback.style.color = '';
