@@ -4901,9 +4901,9 @@ body.dark-mode .blog-filter-btn.active {
 .az-chat-panel {
     position: fixed;
     right: 22px;
-    bottom: 225px;
+    bottom: 180px;
     width: 370px;
-    max-height: min(520px, calc(100vh - 260px));
+    height: 380px;
     background: var(--white);
     border-radius: 24px;
     box-shadow: 0 20px 60px rgba(13,22,48,0.25);
@@ -5019,6 +5019,7 @@ body.dark-mode .blog-filter-btn.active {
     border-radius: 16px;
     padding: 10px 14px;
     animation: msgIn 0.3s ease;
+    font-family: 'Outfit', system-ui, -apple-system, 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
 }
 
 @keyframes msgIn {
@@ -5193,8 +5194,8 @@ body.dark-mode .az-chat-suggestion:hover {
         right: 12px;
         left: 12px;
         width: auto;
-        bottom: 180px;
-        max-height: min(460px, calc(100vh - 210px));
+        bottom: 160px;
+        height: 320px;
     }
 }
 

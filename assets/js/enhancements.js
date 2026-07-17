@@ -95,8 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ==========================================
-       4. PREMIUM CHATBOT WIDGET
-       ========================================== */
+        4. PREMIUM CHATBOT WIDGET
+        ========================================== */
     const chatFab = document.getElementById('azChatFab');
     const chatPanel = document.getElementById('azChatPanel');
     const chatClose = document.getElementById('azChatClose');
@@ -107,18 +107,55 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const WORKER_URL = 'https://divine-mouse-ebab.juandavidriverahuancas0.workers.dev';
     let isTyping = false;
+    let chatHistory = [];
+    let botMsgCount = 0;
+    const MAX_BOT_MSGS = 10;
+
+    function disableChatInput(disabled) {
+        chatInput.disabled = disabled;
+        chatSend.disabled = disabled;
+        if (disabled) {
+            chatInput.placeholder = 'Conversación finalizada';
+            chatSend.style.opacity = '0.4';
+            chatSend.style.pointerEvents = 'none';
+        } else {
+            chatInput.placeholder = 'Escribí tu mensaje...';
+            chatSend.style.opacity = '';
+            chatSend.style.pointerEvents = '';
+        }
+    }
+
+    function addNewChatBtn() {
+        const container = document.getElementById('azChatSuggestions');
+        if (!container) return;
+        container.innerHTML = '';
+        const btn = document.createElement('button');
+        btn.className = 'az-chat-suggestion';
+        btn.textContent = '🔄 Nueva conversación';
+        btn.addEventListener('click', resetChat);
+        container.appendChild(btn);
+    }
+
+    function resetChat() {
+        chatHistory = [];
+        botMsgCount = 0;
+        chatMessages.innerHTML = '';
+        disableChatInput(false);
+        const container = document.getElementById('azChatSuggestions');
+        if (container) container.innerHTML = '';
+    }
 
     // Toggle Panel
     if (chatFab && chatPanel && chatClose) {
         chatFab.addEventListener('click', () => {
             chatPanel.classList.add('open');
-            chatFab.style.transform = 'scale(0)';
-            setTimeout(() => { chatInput.focus(); }, 300);
+            chatFab.style.display = 'none';
+            setTimeout(() => { if (!chatInput.disabled) chatInput.focus(); }, 300);
         });
 
         chatClose.addEventListener('click', () => {
             chatPanel.classList.remove('open');
-            chatFab.style.transform = 'scale(1)';
+            chatFab.style.display = 'flex';
         });
     }
 
@@ -143,33 +180,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const msgDiv = document.createElement('div');
         msgDiv.className = `az-chat-msg ${sender}`;
         
-        // Format bold text if it's from bot
         if (sender === 'bot') {
+            let cleanText = text;
             text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             
-            // Format fallback questions line (separated by ||)
             if (text.includes('||')) {
-                const parts = text.split('\n');
-                let mainText = [];
-                let suggestionText = '';
-                
-                for(let part of parts) {
-                    if(part.includes('||')) {
-                        suggestionText = part;
-                    } else {
-                        mainText.push(part);
-                    }
-                }
-                
-                text = mainText.join('<br>');
-                
-                // Update suggestion buttons
-                if(suggestionText) {
+                const parts = text.split('||');
+                text = parts[0].trim().replace(/\n/g, '<br>');
+                const suggestionText = parts.slice(1).join('||');
+                if (suggestionText.trim()) {
                     updateSuggestions(suggestionText);
                 }
+                cleanText = parts[0].trim();
             } else {
-                 text = text.replace(/\n/g, '<br>');
+                text = text.replace(/\n/g, '<br>');
             }
+            
+            // Store clean version (without ||) in history
+            msgDiv.dataset.clean = cleanText;
         }
         
         msgDiv.innerHTML = text;
@@ -219,9 +247,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = chatInput.value.trim();
         if (!text || isTyping) return;
 
+        // Check limit
+        if (botMsgCount >= MAX_BOT_MSGS) return;
+
         // User message
         appendMessage('user', text);
         chatInput.value = '';
+        chatHistory.push({ role: 'user', content: text });
         
         // Hide previous suggestions while typing
         const suggContainer = document.getElementById('azChatSuggestions');
@@ -231,10 +263,12 @@ document.addEventListener('DOMContentLoaded', () => {
         showTyping();
 
         try {
-            // Include basic instructions to ensure the bot responds properly
+            // Send only last 3 exchanges to save tokens
+            const trimmedHistory = chatHistory.slice(-6);
+
             const payload = {
                 message: text,
-                history: []
+                history: trimmedHistory.slice(0, -1)
             };
 
             const response = await fetch(WORKER_URL, {
@@ -243,7 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(payload)
             });
 
-            if (!response.ok) throw new Error('Error en la API');
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.error || `HTTP ${response.status}`);
+            }
 
             const data = await response.json();
             hideTyping();
@@ -260,11 +297,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             appendMessage('bot', botReply);
+            const lastMsg = chatMessages.lastElementChild;
+            const cleanReply = lastMsg ? (lastMsg.dataset.clean || botReply) : botReply;
+            chatHistory.push({ role: 'assistant', content: cleanReply });
+            botMsgCount++;
+
+            // Check limit after this response
+            if (botMsgCount >= MAX_BOT_MSGS) {
+                disableChatInput(true);
+                addNewChatBtn();
+            }
 
         } catch (error) {
             console.error('Chat error:', error);
             hideTyping();
-            appendMessage('bot', 'Ups, tuvimos un problema de conexión. Por favor, intenta de nuevo o escríbenos a WhatsApp.');
+            appendMessage('bot', 'Ups, tuvimos un problema: ' + error.message + '. Intentá de nuevo o escribinos a WhatsApp.');
         } finally {
             isTyping = false;
         }
