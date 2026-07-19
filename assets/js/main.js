@@ -141,16 +141,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const rings = preloader.querySelectorAll('.ring');
         let angle = 0;
         let lastTs = performance.now();
+        let spinPause = false;
+        let spinTimer = 0;
+        let fadingOut = false;
         let rafId = requestAnimationFrame(function spin(ts) {
             const dt = ts - lastTs;
             lastTs = ts;
-            angle = (angle + dt * 0.3) % 360;
+            if (!fadingOut) {
+                spinTimer += dt;
+                if (!spinPause && spinTimer > 900) {
+                    spinPause = true;
+                    spinTimer = 0;
+                } else if (spinPause && spinTimer > 400) {
+                    spinPause = false;
+                    spinTimer = 0;
+                }
+            }
+            if (!spinPause || fadingOut) {
+                angle = (angle + dt * 0.25) % 360;
+            }
             rings.forEach((r, i) => { r.style.transform = `rotate(${angle + i * 40}deg)`; });
             rafId = requestAnimationFrame(spin);
         });
 
         window.addEventListener('load', () => {
             setTimeout(() => {
+                fadingOut = true;
                 preloader.style.opacity = '0';
                 setTimeout(() => {
                     cancelAnimationFrame(rafId);
@@ -206,6 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // tsParticles: carga dinámica post window.load para no bloquear el hilo principal
     // Se carga el bundle completo solo una vez que la página está completamente lista
     const initParticles = () => {
+        // No cargar partículas en mobile — mejora de rendimiento significativa
+        if (window.innerWidth < 768) return;
+
         if (document.getElementById('particles-js')) {
             const script = document.createElement('script');
             script.src = 'https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js';

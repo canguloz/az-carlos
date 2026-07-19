@@ -52,6 +52,63 @@
         );
 }
 
+/* ===== Botones flotantes en Blog (alineados con index) ===== */
+.whatsapp-float {
+    right: 20px;
+    bottom: 20px;
+    width: 55px;
+    height: 55px;
+}
+
 #btnTop {
-    bottom: 50px;
+    right: 20px;
+    bottom: 92px;
+    width: 55px;
+    height: 55px;
+}
+
+.az-chat-fab {
+    right: 20px;
+    bottom: 160px;
+    width: 55px;
+    height: 55px;
+}
+
+.az-chat-panel {
+    right: 20px;
+}
+
+@media (max-width: 768px) {
+    .whatsapp-float {
+        right: 16px;
+        bottom: 16px;
+        width: 50px;
+        height: 50px;
+    }
+
+    #btnTop {
+        right: 16px;
+        bottom: 78px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .az-chat-fab {
+        right: 16px;
+        bottom: 142px;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+.blog-hero-desarrollo::before {
+    background-image:
+        linear-gradient(rgba(248, 250, 252, 0.55), rgba(248, 250, 252, 0.35)),
+        url('../img/bg-desarrollo.jpg');
+}
+
+.blog-hero-chatbots::before {
+    background-image:
+        linear-gradient(rgba(248, 250, 252, 0.55), rgba(248, 250, 252, 0.35)),
+        url('../img/bg-chatbots.jpg');
 }
