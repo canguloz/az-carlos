@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (text.includes('||')) {
                 const parts = text.split('||');
                 const mainText = parts[0].trim().replace(/\n/g, '<br>');
-                const questions = parts.slice(1).map(q => q.trim()).filter(q => q);
+                const questions = parts.slice(1).map(q => q.trim().replace(/\*\*/g, '').replace(/<\/?[^>]+>/g, '')).filter(q => q);
                 
                 let html = mainText;
                 if (questions.length > 0) {
@@ -476,16 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    /* Cerrar menú al tocar un nav-link (mobile) */
-    document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            const menu = document.getElementById('menu');
-            if (menu && menu.classList.contains('show')) {
-                const toggler = document.querySelector('.navbar-toggler');
-                if (toggler) toggler.click();
-            }
-        });
-    });
+
 
     /* Cerrar menú al redimensionar a >991px (Bootstrap lg breakpoint) */
     let resizeMenuTimer = null;

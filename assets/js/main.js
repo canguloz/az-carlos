@@ -64,6 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cerrar menú hamburguesa y scroll suave al hacer clic en nav-link
     navLinks.forEach(link => {
+        const scrollToTarget = (target) => {
+            const offset = window.innerWidth < 992 ? 35 : 10;
+            const top = target.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        };
+
         link.addEventListener('click', e => {
             const targetId = link.getAttribute('href');
             if (!targetId || !targetId.startsWith('#')) return;
@@ -75,12 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const menu = document.getElementById('menu');
             if (menu && menu.classList.contains('show') && window.bootstrap) {
                 const collapse = bootstrap.Collapse.getInstance(menu);
-                if (collapse) collapse.hide();
+                if (collapse) {
+                    menu.addEventListener('hidden.bs.collapse', () => scrollToTarget(target), { once: true });
+                    collapse.hide();
+                    return;
+                }
             }
 
-            const offset = window.innerWidth < 992 ? 85 : 70;
-            const top = target.getBoundingClientRect().top + window.scrollY - offset;
-            window.scrollTo({ top, behavior: 'smooth' });
+            scrollToTarget(target);
         });
     });
 
@@ -143,11 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.addEventListener('load', () => {
             setTimeout(() => {
-                cancelAnimationFrame(rafId);
                 preloader.style.opacity = '0';
                 setTimeout(() => {
+                    cancelAnimationFrame(rafId);
                     preloader.style.display = 'none';
-                }, 400);
+                }, 500);
             }, 800);
         });
     }

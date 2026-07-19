@@ -64,11 +64,13 @@ body {
         transition: none !important;
     }
 
-    /* Excepción: el spinner del preloader es una animación esencial de progreso,
-       no decorativa (permitido por WCAG). Se mantiene girando. */
     #preloader .ring {
         animation-duration: 1.2s !important;
         animation-iteration-count: infinite !important;
+    }
+    #preloader .loader-logo {
+        animation: none !important;
+        opacity: 1 !important;
     }
 }
 
@@ -1090,7 +1092,7 @@ body.dark-mode .step-number {
 }
 
 section[id] {
-    scroll-margin-top: 70px;
+    scroll-margin-top: -30px;
 }
 
 .about-section,
@@ -3004,14 +3006,31 @@ footer::before {
     background: #081120;
     z-index: 99999;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 0;
+    transition: opacity 0.5s ease;
 }
 
 .loader {
     position: relative;
     width: 120px;
     height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader-logo {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    z-index: 1;
+    border-radius: 50%;
+    filter: drop-shadow(0 0 10px rgba(0, 195, 255, 0.6));
+    animation: loaderPulse 1.5s ease-in-out infinite;
 }
 
 .ring {
@@ -3031,9 +3050,12 @@ footer::before {
 }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes loaderPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
 @keyframes scroll {
@@ -3097,7 +3119,7 @@ footer::before {
 
 @media (max-width: 991px) {
     section[id] {
-        scroll-margin-top: 85px;
+        scroll-margin-top: -15px;
     }
 
     .logo-header {
@@ -3940,11 +3962,6 @@ body.dark-mode .member-img-wrap {
 /* PRELOADER */
 body.dark-mode #preloader {
     background: #0a0f1e;
-}
-
-body.dark-mode .loader .ring {
-    border-color: rgba(0, 195, 255, 0.15);
-    border-top-color: #00c3ff;
 }
 
 /* SCROLL MOUSE */

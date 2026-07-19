@@ -1,8 +1,10 @@
-// Cloudflare Worker — Chatbot AZCONSULTING con RAG
+// Cloudflare Worker — Chatbot AZCONSULTING con RAG + Fallback
 // 1. Entrá a https://dash.cloudflare.com
 // 2. Workers & Pages > Create Worker
 // 3. Pegá este código
-// 4. Settings > Variables > Add: GROQ_API_KEY = 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
+// 4. Settings > Variables > Add:
+//    GROQ_API_KEY = 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
+//    MISTRAL_API_KEY = kj9n0goLhZZciUt8oYtuEyuATid8IIrH
 // 5. Deploy
 
 const rateLimit = new Map();
@@ -106,8 +108,6 @@ export default {
       ? relevant.map(r => `[${r.t}]: ${r.c}`).join('\n\n')
       : '';
 
-    const GROQ_API_KEY = env.GROQ_API_KEY;
-
     const systemPrompt = `Eres el asistente virtual de AZCONSULTING, consultora TI en Trujillo, Perú.
 
 DATOS DE LA EMPRESA:
@@ -126,7 +126,9 @@ INSTRUCCIONES:
 - Si preguntan por precio, decí que es cotización personalizada y contacten por WhatsApp
 - Si preguntan por contacto, derivá al WhatsApp o formulario web
 - Si NO hay información relevante arriba, usá tu conocimiento general sobre la empresa
-- Al FINAL, agregá SIEMPRE "||" y 2 preguntas cortas en la MISMA línea`;
+- Al FINAL, agregá SIEMPRE "||" y EXACTAMENTE 2 preguntas MUY cortas (máx 5 palabras c/u, mismo largo) en la MISMA línea. Ejemplo: "Texto.||¿Qué servicio buscas?||¿WhatsApp o email?"
+- Las preguntas NO deben tener ** ni negritas ni HTML — texto plano
+- Las preguntas deben ser relevantes al contexto de la conversación`;
 
     const messages = [
       { role: 'system', content: systemPrompt },
@@ -134,30 +136,36 @@ INSTRUCCIONES:
       { role: 'user', content: message }
     ];
 
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        messages: messages,
-        max_tokens: 350,
-        temperature: 0.5
-      })
-    });
+    const providers = [
+      { name: 'mistral', api_key: env.MISTRAL_API_KEY, model: 'mistral-large-latest', base_url: 'https://api.mistral.ai/v1/chat/completions' },
+      { name: 'groq', api_key: env.GROQ_API_KEY, model: 'llama-3.3-70b-versatile', base_url: 'https://api.groq.com/openai/v1/chat/completions' }
+    ];
 
-    const data = await res.json();
-    if (data.error) {
-      return new Response(JSON.stringify({ error: data.error.message || JSON.stringify(data.error) }), {
-        status: 500, headers: cors()
-      });
+    const errors = [];
+    for (const prov of providers) {
+      if (!prov.api_key) { errors.push(`${prov.name}: sin key`); continue; }
+      try {
+        const res = await fetch(prov.base_url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${prov.api_key}` },
+          body: JSON.stringify({ model: prov.model, messages, max_tokens: 350, temperature: 0.5 })
+        });
+        const data = await res.json();
+        if (data.error) { errors.push(`${prov.name}: ${data.error.message || JSON.stringify(data.error)}`); continue; }
+        let reply = data.choices[0].message.content;
+        if (reply.includes('||')) {
+          const parts = reply.split('||');
+          const cleanQuestions = parts.slice(1).map(q => q.trim().replace(/\*\*/g, '').replace(/<\/?[^>]+>/g, '')).filter(q => q).join('||');
+          reply = parts[0].trim() + '||' + cleanQuestions;
+        }
+        return new Response(JSON.stringify({ reply }), { headers: cors() });
+      } catch (e) {
+        errors.push(`${prov.name}: ${e.message}`);
+        continue;
+      }
     }
 
-    return new Response(JSON.stringify({ reply: data.choices[0].message.content }), {
-      headers: cors()
-    });
+    return new Response(JSON.stringify({ error: errors.join(' | ') }), { status: 500, headers: cors() });
   }
 };
 
