@@ -136,30 +136,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (preloader) {
-        // Spinner animado con JS (requestAnimationFrame) para que gire SIEMPRE,
-        // sin que el SO/navegador (prefers-reduced-motion) lo bloquee.
         const rings = preloader.querySelectorAll('.ring');
         let angle = 0;
         let lastTs = performance.now();
-        let spinPause = false;
-        let spinTimer = 0;
         let fadingOut = false;
         let rafId = requestAnimationFrame(function spin(ts) {
             const dt = ts - lastTs;
             lastTs = ts;
-            if (!fadingOut) {
-                spinTimer += dt;
-                if (!spinPause && spinTimer > 900) {
-                    spinPause = true;
-                    spinTimer = 0;
-                } else if (spinPause && spinTimer > 400) {
-                    spinPause = false;
-                    spinTimer = 0;
-                }
-            }
-            if (!spinPause || fadingOut) {
-                angle = (angle + dt * 0.25) % 360;
-            }
+            angle = (angle + dt * 0.25) % 360;
             rings.forEach((r, i) => { r.style.transform = `rotate(${angle + i * 40}deg)`; });
             rafId = requestAnimationFrame(spin);
         });
