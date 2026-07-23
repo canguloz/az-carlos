@@ -588,6 +588,14 @@ body.menu-open .az-chat-panel {
     animation-play-state: paused;
 }
 
+
+.hero-team-card h3 {
+    color: var(--primary);
+}
+.hero-team-card ul li {
+    color: var(--text);
+}
+
 .hero-team-card h2 {
     color: var(--primary);
     font-weight: 800;
@@ -830,7 +838,7 @@ body.menu-open .az-chat-panel {
 
 .scroll-mouse {
     position: absolute;
-    bottom: 20px;
+    bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -1476,6 +1484,25 @@ body.dark-mode .service-card p {
 }
 
 .service-card:hover .service-card-link i {
+    transform: translateX(4px);
+}
+.related-service-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+.related-service-link i {
+    font-size: 0.82rem;
+    transition: transform 0.3s ease;
+}
+.card:hover .related-service-link {
+    color: #fff;
+}
+.card:hover .related-service-link i {
     transform: translateX(4px);
 }
 .projects-section {
@@ -3506,7 +3533,9 @@ footer::before {
         display: none;
     }
 
-    .whatsapp-float {
+
+
+.whatsapp-float {
         width: 50px;
         height: 50px;
         font-size: 28px;
@@ -3943,6 +3972,8 @@ body.dark-mode .hero-team-card {
 }
 
 body.dark-mode .hero-team-card h2,
+body.dark-mode .hero-team-card h3,
+body.dark-mode .hero-team-card ul li,
 body.dark-mode .member-name,
 body.dark-mode .member-role,
 body.dark-mode .team-description,
